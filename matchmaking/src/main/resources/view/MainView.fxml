@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Imports... -->
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.meuprojeto.matchmaking.controller.MainController">
+    <padding>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+    </padding>
+
+    <!-- Painel da Esquerda (Gerenciar Jogadores) -->
+    <left>
+        <VBox spacing="10.0" prefWidth="300.0" style="-fx-padding: 0 10 0 0;">
+            <Label text="Gerenciar Jogadores">
+                <font><Font name="System Bold" size="14.0" /></font>
+            </Label>
+            <ListView fx:id="listaJogadoresView" prefHeight="400.0" />
+            <HBox spacing="5.0">
+                <TextField fx:id="nomeJogadorTextField" promptText="Nome do Novo Jogador" HBox.hgrow="ALWAYS" />
+                <Button text="Criar" onAction="#handleCriarJogador" />
+            </HBox>
+            <Button text="Deletar Selecionado" onAction="#handleDeletarJogador" prefWidth="300.0"/>
+            <Button text="ATUALIZAR LISTAS" onAction="#handleAtualizarListas" prefWidth="300.0" style="-fx-font-weight: bold;"/>
+
+            <Label text="Status:"/>
+            <Label fx:id="statusLabel" wrapText="true" prefHeight="100.0" style="-fx-text-fill: blue; -fx-font-weight: bold; -fx-padding: 5; -fx-border-color: lightgray; -fx-border-width: 1;"/>
+        </VBox>
+    </left>
+
+    <!-- Painel Central - TabPane (AGORA COM 4 ABAS) -->
+    <center>
+        <TabPane>
+            <!-- ABA 1: BALANCEAR TIMES (Automático) -->
+            <Tab text="Balancear Times (Automático)" closable="false">
+                <VBox spacing="10.0" style="-fx-padding: 10;">
+                    <!-- (Conteúdo da Aba 1 permanece o mesmo) -->
+                    <Label text="Criar Nova Partida Balanceada">
+                        <font><Font name="System Bold" size="14.0" /></font>
+                    </Label>
+                    <Label text="1. Selecione o Modo de Jogo (Balanceado):"/>
+                    <ComboBox fx:id="modoDeJogoComboBox" prefWidth="400.0" />
+                    <Label text="2. Selecione TODOS os Jogadores (CTRL+Click):"/>
+                    <ListView fx:id="jogadoresDisponiveisView" prefHeight="300.0"/>
+                    <Button text="CRIAR PARTIDA BALANCEADA" onAction="#handleCriarPartidaBalanceada" prefWidth="400.0" style="-fx-font-size: 16; -fx-background-color: #4CAF50; -fx-text-fill: white;"/>
+                </VBox>
+            </Tab>
+
+            <!-- ABA 2: REGISTRAR TIMES FIXOS (Manual) -->
+            <Tab text="Registrar Times Fixos (Manual)" closable="false">
+                <VBox spacing="10.0" style="-fx-padding: 10;">
+                    <!-- (Conteúdo da Aba 2 permanece o mesmo) -->
+                    <Label text="Registrar Partida com Times Fixos">
+                        <font><Font name="System Bold" size="14.0" /></font>
+                    </Label>
+                    <Label text="1. Selecione o Modo de Jogo (Fixo):"/>
+                    <ComboBox fx:id="modoDeJogoFixoComboBox" prefWidth="400.0" />
+                    <HBox spacing="10.0" prefHeight="300.0">
+                        <VBox HBox.hgrow="ALWAYS">
+                            <Label text="Time A"/>
+                            <ListView fx:id="listaTimeA" prefHeight="300.0"/>
+                        </VBox>
+                        <VBox spacing="5.0" alignment="CENTER">
+                            <Label text="Disponíveis"/>
+                            <ComboBox fx:id="jogadoresDisponiveisFixoComboBox" prefWidth="150.0"/>
+                            <Button text="&gt;&gt; Adicionar Time A &gt;&gt;" onAction="#handleAddTimeA" prefWidth="150.0"/>
+                            <Button text="&lt;&lt; Remover Time A &lt;&lt;" onAction="#handleRemoveTimeA" prefWidth="150.0"/>
+                            <Separator/>
+                            <Button text="&gt;&gt; Adicionar Time B &gt;&gt;" onAction="#handleAddTimeB" prefWidth="150.0"/>
+                            <Button text="&lt;&lt; Remover Time B &lt;&lt;" onAction="#handleRemoveTimeB" prefWidth="150.0"/>
+                        </VBox>
+                        <VBox HBox.hgrow="ALWAYS">
+                            <Label text="Time B"/>
+                            <ListView fx:id="listaTimeB" prefHeight="300.0"/>
+                        </VBox>
+                    </HBox>
+                    <Button text="REGISTRAR PARTIDA FIXA" onAction="#handleRegistrarPartidaFixa" prefWidth="400.0" style="-fx-font-size: 16; -fx-background-color: #008CBA; -fx-text-fill: white;"/>
+                </VBox>
+            </Tab>
+
+            <!-- ================================== -->
+            <!-- NOVA ABA 3: HISTÓRICO DE PARTIDAS  -->
+            <!-- ================================== -->
+            <Tab text="Histórico de Partidas" closable="false">
+                <HBox spacing="10.0" style="-fx-padding: 10;">
+                    <!-- Coluna da Esquerda: Lista de Partidas -->
+                    <VBox HBox.hgrow="ALWAYS">
+                        <Label text="Partidas Recentes (Clique para ver detalhes)">
+                            <font><Font name="System Bold" size="14.0" /></font>
+                        </Label>
+                        <ListView fx:id="historicoPartidasListView" prefHeight="500.0" />
+                    </VBox>
+                    <!-- Coluna da Direita: Detalhes da Partida Selecionada -->
+                    <VBox HBox.hgrow="ALWAYS">
+                        <Label text="Detalhes da Partida">
+                            <font><Font name="System Bold" size="14.0" /></font>
+                        </Label>
+                        <TextArea fx:id="detalhesPartidaTextArea" prefHeight="500.0" editable="false" wrapText="true" />
+                    </VBox>
+                </HBox>
+            </Tab>
+
+            <!-- ================================== -->
+            <!-- NOVA ABA 4: PERFIL DO JOGADOR      -->
+            <!-- ================================== -->
+            <Tab text="Perfil do Jogador" closable="false">
+                <VBox spacing="10.0" style="-fx-padding: 10;">
+                    <Label text="Ver Desempenho Individual">
+                        <font><Font name="System Bold" size="14.0" /></font>
+                    </Label>
+
+                    <Label text="1. Selecione um Jogador:" />
+                    <!-- ComboBox para selecionar o jogador -->
+                    <ComboBox fx:id="perfilJogadorComboBox" onAction="#handleBuscarPerfilJogador" prefWidth="400.0" />
+
+                    <Separator />
+
+                    <!-- Labels para exibir estatísticas -->
+                    <Label text="Estatísticas:" style="-fx-font-weight: bold;" />
+                    <Label fx:id="perfilRatingLabel" text="Rating (ELO): -" />
+                    <Label fx:id="perfilPartidasLabel" text="Partidas Jogadas: -" />
+                    <Label fx:id="perfilMvpLabel" text="Total de MVPs: -" />
+                    <Label fx:id="perfilDestaqueLabel" text="Total de Destaques (Perdendo): -" />
+
+                    <Separator />
+
+                    <!-- ListView para o histórico de partidas do jogador -->
+                    <Label text="Histórico de Partidas do Jogador:" style="-fx-font-weight: bold;" />
+                    <ListView fx:id="perfilJogadorListView" prefHeight="300.0" />
+                </VBox>
+            </Tab>
+
+        </TabPane>
+    </center>
+
+</BorderPane>

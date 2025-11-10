@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Imports... -->
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<!-- Define a View (a Janela) para Registrar o Resultado -->
+<VBox alignment="TOP_CENTER" spacing="10.0" style="-fx-padding: 20;"
+      xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.meuprojeto.matchmaking.controller.RegistroResultadoController">
+
+    <!-- ================================== -->
+    <!-- AQUI ESTÁ A CORREÇÃO               -->
+    <!-- Define o ToggleGroup em um bloco de definição não-visual -->
+    <!-- ================================== -->
+    <fx:define>
+        <ToggleGroup fx:id="vencedorToggleGroup" />
+    </fx:define>
+
+    <!-- O resto dos componentes visuais -->
+    <Label text="Registrar Resultado da Partida">
+        <font><Font name="System Bold" size="18.0" />
+        </font>
+    </Label>
+
+    <Label fx:id="partidaInfoLabel" text="Partida #ID (Modo de Jogo)">
+        <font><Font size="14.0" />
+        </font>
+    </Label>
+    <Label fx:id="timeALabel" text="Time A: Jogador1, Jogador2..." />
+    <Label fx:id="timeBLabel" text="Time B: Jogador3, Jogador4..." />
+
+    <!-- Seletor de Vencedor -->
+    <VBox spacing="5.0" style="-fx-padding: 15 0 0 0;">
+        <Label text="1. Selecione o Resultado:" style="-fx-font-weight: bold;" />
+        <!-- O ToggleGroup NÃO está mais aqui -->
+        <!-- Os RadioButtons ainda apontam para "$vencedorToggleGroup" -->
+        <RadioButton fx:id="timeARadioButton" text="Vitória Time A" toggleGroup="$vencedorToggleGroup" />
+        <RadioButton fx:id="timeBRadioButton" text="Vitória Time B" toggleGroup="$vencedorToggleGroup" />
+        <RadioButton fx:id="empateRadioButton" text="Empate" toggleGroup="$vencedorToggleGroup" selected="true" />
+    </VBox>
+
+    <!-- Seletores de Destaque (Sugestão 1) -->
+    <VBox spacing="5.0" style="-fx-padding: 15 0 0 0;">
+        <Label text="2. Selecione os Destaques (Opcional):" style="-fx-font-weight: bold;" />
+
+        <Label text="MVP da Partida (Bônus de Rating):" />
+        <ComboBox fx:id="mvpComboBox" prefWidth="300.0" promptText="Nenhum" />
+
+        <Label text="Destaque Time Perdedor (Mitigação):" />
+        <ComboBox fx:id="destaqueComboBox" prefWidth="300.0" promptText="Nenhum" />
+    </VBox>
+
+    <Button fx:id="salvarButton" onAction="#handleSalvarResultado" text="Salvar Resultado e Atualizar Ratings"
+            style="-fx-font-size: 14; -fx-background-color: #008CBA; -fx-text-fill: white; -fx-margin-top: 20;" />
+
+</VBox>
